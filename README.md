@@ -23,7 +23,7 @@ A lightweight real-time object detection system using YOLOv8 on Raspberry Pi.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/ai_spy_cam.git
+git clone https://github.com/mit-gtl-spain-iesdecelra-2026/ai_spy_cam.git
 cd ai_spy_cam
 ```
 
