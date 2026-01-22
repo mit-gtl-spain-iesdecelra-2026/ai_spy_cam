@@ -1,0 +1,33 @@
+# Virtual environment
+ai/
+venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# YOLO model files (downloaded at runtime)
+*.pt
+*.onnx
+*.engine
+
+# Screenshots (generated at runtime)
+screenshots/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Ultralytics
+runs/
