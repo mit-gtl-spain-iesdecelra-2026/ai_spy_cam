@@ -59,11 +59,15 @@ DISPLAY=:0 python3 yolo_detect.py
 
 ## Controls
 
+Controls work two ways:
+1. **Press key** when the detection window has focus (on Pi's screen)
+2. **Type letter + Enter** in the SSH terminal
+
 | Key | Action |
 |-----|--------|
-| `Q` | Quit the application |
-| `S` | Save screenshot to `screenshots/` folder |
-| `P` | Pause/Resume detection |
+| `q` | Quit the application |
+| `s` | Save screenshot to `screenshots/` folder |
+| `p` | Pause/Resume detection |
 
 ---
 

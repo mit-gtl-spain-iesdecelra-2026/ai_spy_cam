@@ -6,10 +6,10 @@ Optimized for Raspberry Pi 4 + Camera Module 3 + 7" Display
 
 For teaching students about real-time AI object detection.
 
-Controls:
-- Press 'q' to quit
-- Press 's' to save a screenshot
-- Press 'p' to pause/resume detection
+Controls (press key in window OR type in terminal + Enter):
+- 'q' = quit
+- 's' = save screenshot
+- 'p' = pause/resume detection
 
 Author: AI Spy Cam Project
 """
@@ -17,12 +17,21 @@ Author: AI Spy Cam Project
 import cv2
 import time
 import subprocess
+import sys
+import select
 import numpy as np
 from pathlib import Path
 from datetime import datetime
 
 # Import YOLO from ultralytics
 from ultralytics import YOLO
+
+
+def check_terminal_input():
+    """Check if there's input available from terminal (for SSH control)."""
+    if select.select([sys.stdin], [], [], 0)[0]:
+        return sys.stdin.readline().strip().lower()
+    return None
 
 
 # =============================================================================
@@ -33,9 +42,10 @@ from ultralytics import YOLO
 # Options: yolov8n, yolov8s, yolov8m, yolov8l, yolov8x (n=nano is best for Pi)
 MODEL_NAME = "yolov8n.pt"
 
-# Camera resolution (lower = faster, 640x480 is good balance)
-CAMERA_WIDTH = 640
-CAMERA_HEIGHT = 480
+# Camera resolution - using 1280x720 for wider field of view
+# The Camera Module 3 crops heavily at 640x480, so we capture wider and scale down
+CAMERA_WIDTH = 1280
+CAMERA_HEIGHT = 720
 
 # Display settings (matched to 7" screen at 800x480)
 DISPLAY_WIDTH = 800
@@ -279,7 +289,8 @@ def main():
     cv2.moveWindow(window_name, 0, 0)  # Position at top-left
     
     print("\nStarting detection...")
-    print("   Press 'q' to quit, 's' to save screenshot, 'p' to pause\n")
+    print("Controls (window must have focus for keys, or type in terminal + Enter):")
+    print("   q = quit | s = save screenshot | p = pause/resume\n")
     
     # Performance tracking
     fps = 0
@@ -344,15 +355,18 @@ def main():
             # Display frame
             cv2.imshow(window_name, frame)
             
-            # Handle keyboard input
+            # Handle keyboard input (from window)
             key = cv2.waitKey(1) & 0xFF
             
-            if key == ord('q'):
+            # Also check for terminal input (for SSH users)
+            terminal_cmd = check_terminal_input()
+            
+            if key == ord('q') or terminal_cmd == 'q':
                 print("\nQuitting...")
                 break
-            elif key == ord('s'):
+            elif key == ord('s') or terminal_cmd == 's':
                 save_screenshot(frame)
-            elif key == ord('p'):
+            elif key == ord('p') or terminal_cmd == 'p':
                 paused = not paused
                 status = "PAUSED" if paused else "RESUMED"
                 print(f"Detection {status}")
